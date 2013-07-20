@@ -1,5 +1,5 @@
 module PitchBlurbs
-
+  
   class Blurb
     attr_reader :title, :url, :blurb, :lines
     

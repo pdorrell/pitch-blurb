@@ -4,7 +4,53 @@ module PitchBlurbs
   
   class ParseException < Exception
   end
-
+  
+  # A line consisting of text or markers for :start_italic :end_italic :start_bold :end_bold from "_" and "*"
+  # Allow backslash quoting
+  class MarkedUpLine
+    attr_reader :components
+    
+    MARKUP_REGEX = /([\\].)|([*_])|([^\\*_]+)/
+    
+    START_COMPONENTS = {"_" => :start_italic, "*" => :start_bold}
+    END_COMPONENTS = {"_" => :end_italic, "*" => :end_bold}
+    
+    def initialize(line)
+      scannedLine = line.scan(MARKUP_REGEX)
+      puts "scannedLine = #{scannedLine.inspect}"
+      @components = []
+      markupStack = []
+      for scanItem in scannedLine do
+        if scanItem[0] # quoted character
+          @components << scanItem[0][1]
+        elsif scanItem[2] # plain text
+          @components << scanItem[2]
+        elsif scanItem[1] # markup _ or *
+          markup = scanItem[1]
+          if markupStack.length == 0
+            @components << START_COMPONENTS[markup]
+            markupStack << markup
+          elsif markupStack.length == 1
+            if markup == markupStack[-1]
+              markupStack.pop
+              @components << END_COMPONENTS[markup]
+            else
+              markupStack << markup
+              @components << START_COMPONENTS[markup]
+            end
+          elsif markupStack.length == 2
+            if markup == markupStack[-1]
+              markupStack.pop
+              @components << END_COMPONENTS[markup]
+            else
+              raise ParseException.new("Only two levels of nesting allowed for * and _ : #{line.inspect}")
+            end
+          end
+        end
+      end
+    end
+  end
+  
   class PitchBlurbParser
     
     def getNamedLineValue(name, line)

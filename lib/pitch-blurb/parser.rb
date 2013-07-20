@@ -18,7 +18,6 @@ module PitchBlurbs
     
     def parseBlurb(source)
       lines = source.split("\n").map{ |line| line.strip}.select{ |line| line != ""}
-      puts "lines = #{lines.inspect}"
       if lines.length < 4
         raise ParseException.new("Less than four lines")
       end
@@ -26,6 +25,13 @@ module PitchBlurbs
       url = getNamedLineValue("url", lines[1])
       blurb = getNamedLineValue("blurb", lines[2])
       Blurb.new(title: title, url: url, blurb: blurb, lines: lines[3..-1])
+    end
+    
+    BLANK_LINES_REGEX = /(?:^[ \t]*(?:\r\n|\r|\n))+/m
+    
+    def parseBlurbs(source)
+      lineGroups = source.split(BLANK_LINES_REGEX).select{|line| line != ""}
+      lineGroups.map{|lines| parseBlurb(lines)}
     end
   end
 end

@@ -10,6 +10,12 @@ module PitchBlurbs
                                          " like this: ", "*", "*", ". ", 
                                          :start_italic, "Give", :end_italic, " it to me"]
     end
+    
+    it "parses nested bold and italic" do
+      markedUpLine = MarkedUpLine.new("I *a_b_c*_d*e*f_")
+      markedUpLine.components.should == ["I ", :start_bold, "a", :start_italic, "b", :end_italic, "c", :end_bold, 
+                                         :start_italic, "d", :start_bold, "e", :end_bold, "f", :end_italic]
+    end
   end
   
   describe 'parse a pitch blurb' do

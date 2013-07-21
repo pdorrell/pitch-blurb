@@ -17,7 +17,6 @@ module PitchBlurbs
     
     def initialize(line)
       scannedLine = line.scan(MARKUP_REGEX)
-      puts "scannedLine = #{scannedLine.inspect}"
       @components = []
       markupStack = []
       for scanItem in scannedLine do

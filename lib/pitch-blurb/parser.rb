@@ -5,6 +5,18 @@ module PitchBlurbs
   class ParseException < Exception
   end
   
+  class ThreeLevelsMarkupParseException < ParseException
+    def initialize(line)
+      super("Only two levels of nesting allowed for * and _ : #{line.inspect}")
+    end
+  end
+  
+  class UnclosedMarkupException < ParseException
+    def initialize(markups, line)
+      super("Unclosed markups #{markups.inspect} at end of line: #{line.inspect}")
+    end
+  end
+  
   # A line consisting of text or markers for :start_italic :end_italic :start_bold :end_bold from "_" and "*"
   # Allow backslash quoting
   class MarkedUpLine
@@ -42,10 +54,13 @@ module PitchBlurbs
               markupStack.pop
               @components << END_COMPONENTS[markup]
             else
-              raise ParseException.new("Only two levels of nesting allowed for * and _ : #{line.inspect}")
+              raise ThreeLevelsMarkupParseException.new(line)
             end
           end
         end
+      end
+      if !markupStack.empty?
+        raise UnclosedMarkupException.new(markupStack,line)
       end
     end
   end

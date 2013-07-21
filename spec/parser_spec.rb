@@ -16,6 +16,21 @@ module PitchBlurbs
       markedUpLine.components.should == ["I ", :start_bold, "a", :start_italic, "b", :end_italic, "c", :end_bold, 
                                          :start_italic, "d", :start_bold, "e", :end_bold, "f", :end_italic]
     end
+    
+    it "disallows 3 levels of nesting" do
+      expect do
+        markedUpLine = MarkedUpLine.new("I *a_b*c*d_e*")
+      end.to raise_error ThreeLevelsMarkupParseException
+    end      
+    
+    it "requires markup to be closed" do
+      for line in ["*", "**_", "It _is good", "__*__*_"] do
+        expect do
+          markedUpLine = MarkedUpLine.new(line)
+        end.to raise_error UnclosedMarkupException
+      end
+    end
+      
   end
   
   describe 'parse a pitch blurb' do

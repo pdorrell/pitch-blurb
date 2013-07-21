@@ -30,6 +30,14 @@ module PitchBlurbs
       expectedHtml = readSourceFile("output/frog-blurb.html")
       pitchBlurb.to_html.should == expectedHtml
     end
+
+    it "generates HTML markup for parsed blurbs" do
+      pitchBlurbSource = readSourceFile("input/AndB.blurbs")
+      parser = PitchBlurbParser.new
+      pitchBlurbs = parser.parseBlurbs(pitchBlurbSource)
+      expectedHtml = readSourceFile("output/AandB-blurbs.html")
+      pitchBlurbs.to_html.should == expectedHtml
+    end
   end
 end
   

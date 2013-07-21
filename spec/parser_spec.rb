@@ -46,7 +46,11 @@ module PitchBlurbs
       pitchBlurb = parser.parseBlurb(pitchBlurbSource)
       expectedPitchBlurb = Blurb.new(title: "My Frog", url: "frog.html", 
                                      blurb: "it eats flies", 
-                                     lines: ["It jumps", "It's like a toad but not so ugly"])
+                                     lines: [MarkedUpLine.new("It jumps."), 
+                                             MarkedUpLine.new("It's like a ", 
+                                                              :start_bold, "toad",
+                                                              :end_bold, 
+                                                              " but not so ugly.")])
       pitchBlurb.should == expectedPitchBlurb
     end
     

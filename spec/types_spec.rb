@@ -30,13 +30,14 @@ module PitchBlurbs
                              blurb: "it eats flies", lines: ["It jumps", "It's like a toad but not so ugly"])
       pitchBlurb.title.should == "My Frog"
       pitchBlurb.url.should == "frog.html"
-      pitchBlurb.blurb.should == "it eats flies"
-      pitchBlurb.lines[0].should == "It jumps"
+      pitchBlurb.blurb.should == MarkedUpLine.new("it eats flies")
+      pitchBlurb.lines[0].should == MarkedUpLine.new("It jumps")
     end
     
     it "is equal to pitch blurb with same attributes" do
       pitchBlurb1 = Blurb.new(title: "Frog", url: "f.html", blurb: "ribbit", lines: ["line1", "line2"])
-      pitchBlurb2 = Blurb.new(title: "Frog", url: "f.html", blurb: "ribbit", lines: ["line1", "line2"])
+      pitchBlurb2 = Blurb.new(title: "Frog", url: "f.html", blurb: "ribbit", lines: [MarkedUpLine.new("line1"), 
+                                                                                     "line2"])
       pitchBlurb1.should_not == "a string"
       pitchBlurb1.should == pitchBlurb2
       pitchBlurb1.should_not == Blurb.new(title: "Toad", url: "f.html", blurb: "ribbit", lines: ["line1", "line2"])

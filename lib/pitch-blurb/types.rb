@@ -47,11 +47,22 @@ module PitchBlurbs
   class Blurb
     attr_reader :title, :url, :blurb, :lines
     
+    def markedUpLine(parameter)
+      case parameter
+      when MarkedUpLine
+        parameter
+      when String
+        MarkedUpLine.new(parameter)
+      else
+        raise Exception("Parameter #{parameter.inspect} is not a MarkedUpLine and it's not a String")
+      end
+    end
+    
     def initialize(attributes)
       @title = attributes[:title]
       @url = attributes[:url]
-      @blurb = attributes[:blurb]
-      @lines = attributes[:lines]
+      @blurb = markedUpLine(attributes[:blurb])
+      @lines = attributes[:lines].map{|line| markedUpLine(line)}
     end
     
     def ==(otherPitchBlurb)

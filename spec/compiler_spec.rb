@@ -1,4 +1,4 @@
-require 'pitch-blurb/parser'
+require 'pitch-blurb'
 require 'spec_helper'
 
 module PitchBlurbs
@@ -24,19 +24,31 @@ module PitchBlurbs
     end
     
     it "generates HTML markup for parsed blurb" do
-      pitchBlurbSource = readSourceFile("input/frog.blurb")
+      blurbSource = readSourceFile("input/frog.blurb")
       parser = PitchBlurbParser.new
-      pitchBlurb = parser.parseBlurb(pitchBlurbSource)
+      pitchBlurb = parser.parseBlurb(blurbSource)
       expectedHtml = readSourceFile("output/frog-blurb.html")
       pitchBlurb.to_html.should == expectedHtml
     end
 
     it "generates HTML markup for parsed blurbs" do
-      pitchBlurbSource = readSourceFile("input/AandB.blurbs")
+      blurbSource = readSourceFile("input/AandB.blurbs")
       parser = PitchBlurbParser.new
-      pitchBlurbs = parser.parseBlurbs(pitchBlurbSource)
+      pitchBlurbs = parser.parseBlurbs(blurbSource)
       expectedHtml = readSourceFile("output/AandB-blurbs.html")
       pitchBlurbs.map(&:to_html).join.should == expectedHtml
+    end
+    
+    it "generates blurb HTML using top-level compile function" do
+      blurbSource = readSourceFile("input/frog.blurb")
+      expectedHtml = readSourceFile("output/frog-blurb.html")
+      PitchBlurbs.compileBlurb(blurbSource).should == expectedHtml
+    end
+
+    it "generates blurbs HTML using top-level compile function" do
+      blurbsSource = readSourceFile("input/AandB.blurbs")
+      expectedHtml = readSourceFile("output/AandB-blurbs.html")
+      PitchBlurbs.compileBlurbs(blurbsSource).should == expectedHtml
     end
   end
 end

@@ -89,8 +89,8 @@ module PitchBlurbs
       end
       title = getNamedLineValue("title", lines[0])
       url = getNamedLineValue("url", lines[1])
-      blurb = getNamedLineValue("blurb", lines[2])
-      Blurb.new(title: title, url: url, blurb: blurb, 
+      heading = getNamedLineValue("heading", lines[2])
+      Blurb.new(title: title, url: url, heading: heading, 
                 lines: lines[3..-1].map{|line| @markupLineParser.parse(line)})
     end
     

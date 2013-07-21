@@ -45,7 +45,7 @@ module PitchBlurbs
   end
   
   class Blurb
-    attr_reader :title, :url, :blurb, :lines
+    attr_reader :title, :url, :heading, :lines
     
     def markedUpLine(parameter)
       case parameter
@@ -61,7 +61,7 @@ module PitchBlurbs
     def initialize(attributes)
       @title = attributes[:title]
       @url = attributes[:url]
-      @blurb = attributes[:blurb]
+      @heading = attributes[:heading]
       @lines = attributes[:lines].map{|line| markedUpLine(line)}
     end
     
@@ -69,14 +69,14 @@ module PitchBlurbs
       otherPitchBlurb.class == Blurb &&
         otherPitchBlurb.title == @title &&
         otherPitchBlurb.url == @url &&
-        otherPitchBlurb.blurb == @blurb &&
+        otherPitchBlurb.heading == @heading &&
         otherPitchBlurb.lines == @lines
     end
     
     def to_html
       "<div class=\"blurb\">\n" +
         "  <a href=\"#{@url}\">\n" +
-        "    <div class=\"title\">#{@title}</div><div class=\"heading\">#{@blurb}</div>\n" + 
+        "    <div class=\"title\">#{@title}</div><div class=\"heading\">#{@heading}</div>\n" + 
         "    <div class=\"indenting\">\n" +
         @lines.map{|line| "      <p>#{line.to_html}</p>\n"}.join("") + 
         "    </div>\n" +

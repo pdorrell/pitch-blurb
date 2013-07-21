@@ -2,7 +2,7 @@
  
 title: A
 url: a.html
-blurb: aye
+heading: aye
 A1
 A2
 A3
@@ -10,7 +10,7 @@ A3
   
 title:B
 url:b.html
-blurb:bee
+heading:bee
  B1
  B2 
   

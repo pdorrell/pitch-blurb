@@ -41,7 +41,7 @@ module PitchBlurbs
       pitchBlurbSource = readSourceFile("input/frog.blurb")
       pitchBlurb = parser.parseBlurb(pitchBlurbSource)
       expectedPitchBlurb = Blurb.new(title: "My Frog", url: "frog.html", 
-                                     blurb: "it eats flies", 
+                                     heading: "it eats flies", 
                                      lines: [MarkedUpLine.new("It jumps."), 
                                              MarkedUpLine.new("It's like a ", 
                                                               :start_bold, "toad",
@@ -54,8 +54,8 @@ module PitchBlurbs
       parser = PitchBlurbParser.new
       pitchBlurbSource = readSourceFile("input/AandB.blurbs")
       pitchBlurbs = parser.parseBlurbs(pitchBlurbSource)
-      expectedPitchBlurbs = [Blurb.new(title: "A", url: "a.html", blurb: "aye", lines:["A1", "A2", "A3"]), 
-                             Blurb.new(title: "B", url: "b.html", blurb: "bee", lines:["B1", "B2"])]
+      expectedPitchBlurbs = [Blurb.new(title: "A", url: "a.html", heading: "aye", lines:["A1", "A2", "A3"]), 
+                             Blurb.new(title: "B", url: "b.html", heading: "bee", lines:["B1", "B2"])]
       pitchBlurbs.should == expectedPitchBlurbs                        
     end
   end

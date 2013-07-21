@@ -61,7 +61,7 @@ module PitchBlurbs
     def initialize(attributes)
       @title = attributes[:title]
       @url = attributes[:url]
-      @blurb = markedUpLine(attributes[:blurb])
+      @blurb = attributes[:blurb]
       @lines = attributes[:lines].map{|line| markedUpLine(line)}
     end
     
@@ -71,6 +71,17 @@ module PitchBlurbs
         otherPitchBlurb.url == @url &&
         otherPitchBlurb.blurb == @blurb &&
         otherPitchBlurb.lines == @lines
+    end
+    
+    def to_html
+      "<div class=\"blurb\">\n" +
+        "  <a href=\"#{@url}\">\n" +
+        "    <div class=\"title\">#{@title}</div><div class=\"heading\">#{@blurb}</div>\n" + 
+        "    <div class=\"indenting\">\n" +
+        @lines.map{|line| "      <p>#{line.to_html}</p>\n"}.join("") + 
+        "    </div>\n" +
+        "  </a>\n" +
+        "</div>\n"
     end
   end
 end

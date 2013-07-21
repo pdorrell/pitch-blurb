@@ -30,7 +30,7 @@ module PitchBlurbs
                              blurb: "it eats flies", lines: ["It jumps", "It's like a toad but not so ugly"])
       pitchBlurb.title.should == "My Frog"
       pitchBlurb.url.should == "frog.html"
-      pitchBlurb.blurb.should == MarkedUpLine.new("it eats flies")
+      pitchBlurb.blurb.should == "it eats flies"
       pitchBlurb.lines[0].should == MarkedUpLine.new("It jumps")
     end
     

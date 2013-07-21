@@ -1,4 +1,5 @@
 require 'pitch-blurb/parser'
+require 'spec_helper'
 
 module PitchBlurbs
 
@@ -22,6 +23,13 @@ module PitchBlurbs
       markedUpLine.to_html.should == "<i>Hello world</i>"
     end
     
+    it "generates HTML markup for parsed blurb" do
+      pitchBlurbSource = readSourceFile("input/frog.blurb")
+      parser = PitchBlurbParser.new
+      pitchBlurb = parser.parseBlurb(pitchBlurbSource)
+      expectedHtml = readSourceFile("output/frog-blurb.html")
+      pitchBlurb.to_html.should == expectedHtml
+    end
   end
 end
   

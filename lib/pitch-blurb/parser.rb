@@ -19,13 +19,15 @@ module PitchBlurbs
   
   # A line consisting of text or markers for :start_italic :end_italic :start_bold :end_bold from "_" and "*"
   # Allow backslash quoting
-  class MarkedUpLine
+  class ParsedMarkupLine
     attr_reader :components
     
     MARKUP_REGEX = /([\\].)|([*_])|([^\\*_]+)/
     
     START_COMPONENTS = {"_" => :start_italic, "*" => :start_bold}
     END_COMPONENTS = {"_" => :end_italic, "*" => :end_bold}
+    
+    COMPONENT_HTML = { start_italic: "<i>", end_italic: "</i>", start_bold: "<b>", end_bold: "</b>"}
     
     def initialize(line)
       scannedLine = line.scan(MARKUP_REGEX)
@@ -63,6 +65,20 @@ module PitchBlurbs
         raise UnclosedMarkupException.new(markupStack,line)
       end
     end
+    
+    def componentToHtml(component)
+      case component
+      when Symbol
+        COMPONENT_HTML[component]
+      else
+        component
+      end
+    end
+    
+    def to_html
+      @components.map{|component| componentToHtml(component)}.join("")
+    end
+    
   end
   
   class PitchBlurbParser

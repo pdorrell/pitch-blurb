@@ -5,8 +5,11 @@ module PitchBlurbs
     
     attr_reader :components
 
-    def initialize
+    def initialize(*components)
       @components = []
+      for component in components do
+        add(component)
+      end
     end
     
     def add(component)
@@ -29,6 +32,11 @@ module PitchBlurbs
       else
         component
       end
+    end
+    
+    def ==(otherMarkedUpLine)
+      otherMarkedUpLine.class == MarkedUpLine &&
+        otherMarkedUpLine.components == @components
     end
 
     def to_html

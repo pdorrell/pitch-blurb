@@ -12,6 +12,15 @@ module PitchBlurbs
       markedUpLine.add(:end_italic)
       markedUpLine.components.should == [:start_italic, "Hello world", :end_italic]
     end
+    
+    it "constructs with or without initial components" do
+      markedUpLine = MarkedUpLine.new("Hello ", "world")
+      markedUpLine2 = MarkedUpLine.new
+      markedUpLine2.add("Hello ")
+      markedUpLine2.add("world")
+      markedUpLine.should == markedUpLine2
+    end
+    
   end
   
   describe 'pitch blurb type' do

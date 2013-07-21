@@ -32,11 +32,11 @@ module PitchBlurbs
     end
 
     it "generates HTML markup for parsed blurbs" do
-      pitchBlurbSource = readSourceFile("input/AndB.blurbs")
+      pitchBlurbSource = readSourceFile("input/AandB.blurbs")
       parser = PitchBlurbParser.new
       pitchBlurbs = parser.parseBlurbs(pitchBlurbSource)
       expectedHtml = readSourceFile("output/AandB-blurbs.html")
-      pitchBlurbs.to_html.should == expectedHtml
+      pitchBlurbs.map(&:to_html).join.should == expectedHtml
     end
   end
 end

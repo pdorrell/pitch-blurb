@@ -40,7 +40,7 @@ module PitchBlurbs
     end
 
     def to_html
-      @components.map{|component| componentToHtml(component)}.join("")
+      @components.map{|component| componentToHtml(component)}.join
     end
   end
   
@@ -78,7 +78,7 @@ module PitchBlurbs
         "  <a href=\"#{@url}\">\n" +
         "    <div class=\"title\">#{@title}</div><div class=\"heading\">#{@heading}</div>\n" + 
         "    <div class=\"indenting\">\n" +
-        @lines.map{|line| "      <p>#{line.to_html}</p>\n"}.join("") + 
+        @lines.map{|line| "      <p>#{line.to_html}</p>\n"}.join + 
         "    </div>\n" +
         "  </a>\n" +
         "</div>\n"

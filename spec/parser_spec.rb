@@ -36,10 +36,6 @@ module PitchBlurbs
   
   describe 'parse a pitch blurb' do
     
-    def readSourceFile(relativePath)
-      File.open(File.join(File.dirname(__FILE__), relativePath)).read
-    end
-    
     it "parses a pitch blurb" do
       parser = PitchBlurbParser.new
       pitchBlurbSource = readSourceFile("input/frog.blurb")

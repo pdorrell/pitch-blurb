@@ -6,6 +6,10 @@ module PitchBlurbs
       MarkupLineParser.new.parse(line)
     end
   
+    def readSourceFile(relativePath)
+      File.open(File.join(File.dirname(__FILE__), relativePath)).read
+    end
+    
   end
 end
 

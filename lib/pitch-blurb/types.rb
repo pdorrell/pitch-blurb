@@ -1,7 +1,10 @@
 module PitchBlurbs
   
   class MarkedUpLine
+    COMPONENT_HTML = { start_italic: "<i>", end_italic: "</i>", start_bold: "<b>", end_bold: "</b>"}
+    
     attr_reader :components
+
     def initialize
       @components = []
     end
@@ -17,6 +20,19 @@ module PitchBlurbs
           @components << component
         end
       end
+    end
+
+    def componentToHtml(component)
+      case component
+      when Symbol
+        COMPONENT_HTML[component]
+      else
+        component
+      end
+    end
+
+    def to_html
+      @components.map{|component| componentToHtml(component)}.join("")
     end
   end
   

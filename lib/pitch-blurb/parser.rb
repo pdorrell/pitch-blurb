@@ -19,7 +19,7 @@ module PitchBlurbs
   
   # A line consisting of text or markers for :start_italic :end_italic :start_bold :end_bold from "_" and "*"
   # Allow backslash quoting
-  class ParsedMarkupLine
+  class MarkupLineParser
     attr_reader :components
     
     MARKUP_REGEX = /([\\].)|([*_])|([^\\*_]+)/
@@ -27,34 +27,33 @@ module PitchBlurbs
     START_COMPONENTS = {"_" => :start_italic, "*" => :start_bold}
     END_COMPONENTS = {"_" => :end_italic, "*" => :end_bold}
     
-    COMPONENT_HTML = { start_italic: "<i>", end_italic: "</i>", start_bold: "<b>", end_bold: "</b>"}
-    
-    def initialize(line)
+    def parse(line)
       scannedLine = line.scan(MARKUP_REGEX)
+      markedUpLine = MarkedUpLine.new
       @components = []
       markupStack = []
       for scanItem in scannedLine do
         if scanItem[0] # quoted character
-          @components << scanItem[0][1]
+          markedUpLine.add(scanItem[0][1])
         elsif scanItem[2] # plain text
-          @components << scanItem[2]
+          markedUpLine.add(scanItem[2])
         elsif scanItem[1] # markup _ or *
           markup = scanItem[1]
           if markupStack.length == 0
-            @components << START_COMPONENTS[markup]
+            markedUpLine.add(START_COMPONENTS[markup])
             markupStack << markup
           elsif markupStack.length == 1
             if markup == markupStack[-1]
               markupStack.pop
-              @components << END_COMPONENTS[markup]
+              markedUpLine.add(END_COMPONENTS[markup])
             else
               markupStack << markup
-              @components << START_COMPONENTS[markup]
+              markedUpLine.add(START_COMPONENTS[markup])
             end
           elsif markupStack.length == 2
             if markup == markupStack[-1]
               markupStack.pop
-              @components << END_COMPONENTS[markup]
+              markedUpLine.add(END_COMPONENTS[markup])
             else
               raise ThreeLevelsMarkupParseException.new(line)
             end
@@ -64,21 +63,8 @@ module PitchBlurbs
       if !markupStack.empty?
         raise UnclosedMarkupException.new(markupStack,line)
       end
+      markedUpLine
     end
-    
-    def componentToHtml(component)
-      case component
-      when Symbol
-        COMPONENT_HTML[component]
-      else
-        component
-      end
-    end
-    
-    def to_html
-      @components.map{|component| componentToHtml(component)}.join("")
-    end
-    
   end
   
   class PitchBlurbParser

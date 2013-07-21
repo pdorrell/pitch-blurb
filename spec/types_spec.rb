@@ -2,6 +2,18 @@ require 'pitch-blurb/types'
 
 module PitchBlurbs
   
+  describe 'marked up line' do
+    
+    it "construct & deconstruct markup line" do
+      markedUpLine = MarkedUpLine.new
+      markedUpLine.add(:start_italic)
+      markedUpLine.add("Hello")
+      markedUpLine.add(" world")
+      markedUpLine.add(:end_italic)
+      markedUpLine.components.should == [:start_italic, "Hello world", :end_italic]
+    end
+  end
+  
   describe 'pitch blurb type' do
     
     it "construct & deconstruct pitch blurb" do
